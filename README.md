@@ -1,3 +1,9 @@
+# My CRUD App
+
+This is a CRUD (Create, Read, Update, Delete) web application built with Next.js.
+
+## Folder Structure
+
 my-dashboard-app/
 │
 ├── .next/                // Next.js build directory (auto-generated)
@@ -22,7 +28,8 @@ my-dashboard-app/
 └── tsconfig.json          // TypeScript configuration
 
 
-instructin to run :
+
+# Run below comand to successfully run My CRUD App
 
 git clone https://github.com/wikas007/my-crud-app.git
 

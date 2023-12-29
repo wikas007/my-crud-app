@@ -4,8 +4,10 @@ const API_BASE_URL = 'http://127.0.0.1:5001/crud-app-cloud/us-central1';
 
 const Home = () => {
   const [users, setUsers] = useState([]);
-  const [newUser, setNewUser] = useState({ id: '', name: '', email: '' });
+  const [newUser, setNewUser] = useState({ name: '', email: '' });
   const [editingUserId, setEditingUserId] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
     fetchData();
@@ -23,8 +25,14 @@ const Home = () => {
 
   const handleAddUser = async () => {
     try {
+      setIsLoading(true);
+      setError(null);
+
+      if (!newUser.name.trim() || !isValidEmail(newUser.email)) {
+        throw new Error('Please provide a valid name and email.');
+      }
+
       if (editingUserId) {
-        // If editing, update the user
         await fetch(`${API_BASE_URL}/updateUser`, {
           method: 'PUT',
           headers: {
@@ -32,30 +40,35 @@ const Home = () => {
           },
           body: JSON.stringify({ ...newUser, id: editingUserId }),
         });
-        setEditingUserId(null); // Reset editing state
+        setEditingUserId(null);
       } else {
-        // If not editing, add a new user
+        const newUserWithId = { ...newUser, id: generateNewId() };
         await fetch(`${API_BASE_URL}/addUser`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
           },
-          body: JSON.stringify(newUser),
+          body: JSON.stringify(newUserWithId),
         });
       }
 
-      // Fetch updated user list after adding/updating a user
       fetchData();
-      setNewUser({ id: '', name: '', email: '' });
+      setNewUser({ name: '', email: '' });
     } catch (error) {
-      console.error('Error adding/updating user:', error);
+      console.error('Error adding/updating user:', error.message);
+      setError(error.message);
+    } finally {
+      setIsLoading(false);
     }
+  };
+
+  const generateNewId = () => {
+    return Date.now().toString();
   };
 
   const handleEditUser = (user) => {
     setEditingUserId(user.id);
-    // Use existing user data for editing
-    setNewUser({ id: user.id, name: user.name, email: user.email });
+    setNewUser({ name: user.name, email: user.email });
   };
 
   const handleDeleteUser = async (userId) => {
@@ -68,11 +81,16 @@ const Home = () => {
         body: JSON.stringify({ id: userId }),
       });
 
-      // Fetch updated user list after deleting a user
       fetchData();
     } catch (error) {
       console.error('Error deleting user:', error);
     }
+  };
+
+  const isValidEmail = (email) => {
+    // Basic email validation
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailRegex.test(email);
   };
 
   return (
@@ -80,18 +98,11 @@ const Home = () => {
       <div className="w-full max-w-lg">
         <h1 className="text-3xl font-bold mb-8">CRUD Operations</h1>
 
-        {/* Add User Form */}
         <div className="bg-gray-100 p-4 rounded mb-8">
           <h2 className="text-2xl font-bold mb-4">Add User</h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
             <div className="mb-4">
-              <label className="block text-sm font-medium text-gray-600">ID:</label>
-              <input
-                className="mt-1 p-2 border rounded-md w-full"
-                type="text"
-                value={newUser.id}
-                onChange={(e) => setNewUser({ ...newUser, id: e.target.value })}
-              />
+              {/* ID field removed */}
             </div>
             <div className="mb-4">
               <label className="block text-sm font-medium text-gray-600">Name:</label>
@@ -113,14 +124,14 @@ const Home = () => {
             </div>
           </div>
           <button
-            className="bg-blue-500 text-white py-2 px-4 mt-4 rounded hover:bg-blue-600 focus:outline-none focus:shadow-outline-blue"
+            className={`bg-blue-500 text-white py-2 px-4 mt-4 rounded hover:bg-blue-600 focus:outline-none focus:shadow-outline-blue ${isLoading ? 'opacity-50 cursor-not-allowed' : ''}`}
             onClick={handleAddUser}
           >
-            {editingUserId ? 'Update User' : 'Add User'}
+            {isLoading ? 'Adding...' : editingUserId ? 'Update User' : 'Add User'}
           </button>
+          {error && <p className="text-red-500 mt-2">{error}</p>}
         </div>
 
-        {/* User List */}
         <div>
           <h2 className="text-2xl font-bold mb-4">User List</h2>
           <ul>

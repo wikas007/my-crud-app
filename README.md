@@ -2,7 +2,7 @@
 
 This is a CRUD (Create, Read, Update, Delete) web application built with Next.js.
 
-## Folder Structure
+# Folder Structure
 
 ```plaintext
 my-dashboard-app/
@@ -28,8 +28,7 @@ my-dashboard-app/
 ├── tailwind.config.js     // Tailwind CSS configuration
 └── tsconfig.json          // TypeScript configuration
 
-
-##Getting Started
+# Getting Started
 Follow these steps to run the application locally:
 
 Prerequisites

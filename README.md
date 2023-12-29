@@ -1,11 +1,3 @@
-﻿# my-crud-app
-# My CRUD App
-
-This is a CRUD (Create, Read, Update, Delete) web application built with Next.js.
-
-## Folder Structure
-
-```plaintext
 my-dashboard-app/
 │
 ├── .next/                // Next.js build directory (auto-generated)
@@ -28,3 +20,20 @@ my-dashboard-app/
 ├── README.md              // README file with instructions
 ├── tailwind.config.js     // Tailwind CSS configuration
 └── tsconfig.json          // TypeScript configuration
+
+
+instructin to run :
+
+git clone https://github.com/wikas007/my-crud-app.git
+
+
+cd my-crud-app/my-dashboard-app
+
+npm install
+
+npm run dev
+
+
+docker build -t my-dashboard-app .
+
+docker run -p 3000:3000 my-dashboard-app

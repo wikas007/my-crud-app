@@ -31,60 +31,46 @@ my-dashboard-app/
 # Getting Started
 Follow these steps to run the application locally:
 
-Prerequisites
+# Prerequisites
 Node.js
 npm or Yarn
 Installation
 Clone the repository:
 
-bash
-Copy code
+
 git clone https://github.com/wikas007/my-crud-app.git
-Navigate to the project folder:
 
-bash
-Copy code
+# Navigate to the project folder:
+
 cd my-crud-app/my-dashboard-app
-Install dependencies:
 
-bash
-Copy code
+# Install dependencies:
+
 npm install
 Running Locally
 Run the development server:
 
-bash
-Copy code
 npm run dev
 The app will be available at http://localhost:3000.
 
-Building Docker Image
-Build a Docker image:
 
-bash
-Copy code
+#Build a Docker image:
+
 docker build -t my-dashboard-app .
 Running with Docker
-Run the Docker container:
+# Run the Docker container:
 
-bash
-Copy code
 docker run -p 3000:3000 my-dashboard-app
 The app will be available at http://localhost:3000.
 
 Deploying Functions
 Navigate to the functions folder:
 
-bash
-Copy code
 cd functions
 Install dependencies:
 
-bash
-Copy code
 npm install
 Deploy the functions:
 
-bash
-Copy code
+
 firebase deploy --only functions
